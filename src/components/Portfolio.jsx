@@ -90,13 +90,13 @@ function Portfolio() {
     <>
       <motion.section
         id="portfolio"
-        className="bg-slate-950 py-24 text-white"
+        className="bg-slate-950 py-16 md:py-24 text-white"
         initial={{ opacity: 0, y: 80 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
         viewport={{ once: true }}
       >
-        <div className="max-w-7xl mx-auto px-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
           {/* Heading */}
 
@@ -105,7 +105,7 @@ function Portfolio() {
               Our Portfolio
             </h4>
 
-            <h2 className="text-5xl font-bold mt-4">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mt-4">
               Featured Embroidery Designs
             </h2>
 
@@ -117,7 +117,7 @@ function Portfolio() {
 
           {/* Portfolio Grid */}
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
             {portfolioItems.map((item) => (
 
@@ -135,12 +135,12 @@ function Portfolio() {
                 <img
                   src={item.image}
                   alt={item.title}
-                  className="w-full h-72 object-cover"
+                  className="w-full h-56 sm:h-64 md:h-72 object-cover"
                 />
 
-                <div className="p-6">
+                <div className="p-5 sm:p-6">
 
-                  <h3 className="text-2xl font-semibold">
+                  <h3 className="text-xl sm:text-2xl font-semibold">
                     {item.title}
                   </h3>
 

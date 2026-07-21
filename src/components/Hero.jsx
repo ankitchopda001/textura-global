@@ -3,8 +3,8 @@ function Hero() {
   return (
     <section
       id="home"
-      className="relative h-screen flex items-center justify-center overflow-hidden"
-    >
+      className="relative min-h-screen flex items-center justify-center overflow-hidden pt-24 pb-12 md:pt-0 md:pb-0"
+    > 
       {/* Background Image */}
       <img
         src="/images/hero.webp"
@@ -16,8 +16,8 @@ function Hero() {
       <div className="absolute inset-0 bg-black/70"></div>
 
       {/* Hero Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 text-center text-white">
-        <p className="uppercase tracking-[6px] text-yellow-400 font-semibold mb-6">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 text-center text-white">
+        <p className="uppercase tracking-[2px] sm:tracking-[6px] text-xs sm:text-sm text-yellow-400 font-semibold mb-5">
           Premium Embroidery Design & Manufacturing
         </p>
 
@@ -25,7 +25,7 @@ function Hero() {
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 1 }}
-                className="text-5xl md:text-7xl lg:text-8xl font-extrabold leading-tight tracking-tight"
+                className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-extrabold leading-tight tracking-tight"
         >
           Crafting Excellence
           <br />
@@ -38,7 +38,7 @@ function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5, duration: 1 }}
-            className="mt-8 max-w-3xl mx-auto text-lg md:text-xl leading-8 text-gray-200"
+            className="mt-6 max-w-3xl mx-auto text-base sm:text-lg md:text-xl leading-7 sm:leading-8 text-gray-200 px-2"
         >
             We deliver world-class embroidery design, digitizing, and textile manufacturing
             solutions for fashion brands, garment exporters, and global businesses with
@@ -46,10 +46,10 @@ function Hero() {
         </motion.p>
 
         {/* Floating Stats */}
-        <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+        <div className="mt-12 md:mt-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 max-w-4xl mx-auto">
 
-        <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6">
-            <h3 className="text-4xl font-bold text-yellow-400">
+        <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-5 sm:p-6">
+            <h3 className="text-3xl sm:text-4xl font-bold text-yellow-400">
             10K+
             </h3>
             <p className="text-gray-300 mt-2">
@@ -58,7 +58,7 @@ function Hero() {
         </div>
 
         <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6">
-            <h3 className="text-4xl font-bold text-yellow-400">
+            <h3 className="text-3xl sm:text-4xl font-bold text-yellow-400">
             500+
             </h3>
             <p className="text-gray-300 mt-2">
@@ -67,7 +67,7 @@ function Hero() {
         </div>
 
         <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6">
-            <h3 className="text-4xl font-bold text-yellow-400">
+            <h3 className="text-3xl sm:text-4xl font-bold text-yellow-400">
             10+
             </h3>
             <p className="text-gray-300 mt-2">
@@ -77,7 +77,7 @@ function Hero() {
 
         </div>
       </div>
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce z-10">
+      <div className="absolute bottom-4 md:bottom-8 left-1/2 -translate-x-1/2 animate-bounce z-10 hidden md:block">
         <div className="w-6 h-10 border-2 border-white rounded-full flex justify-center">
             <div className="w-1 h-3 bg-white rounded-full mt-2"></div>
         </div>

@@ -23,13 +23,13 @@ function Navbar() {
           : "bg-transparent"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
 
         {/* Logo */}
 
-        <h1 className="text-3xl font-bold text-yellow-400">
+        <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold text-yellow-500">
           Textura Global
-        </h1>
+        </h2>
 
         {/* Desktop Menu */}
 
@@ -64,7 +64,7 @@ function Navbar() {
         {/* Mobile Button */}
 
         <button
-          className="md:hidden"
+          className="md:hidden text-white"
           onClick={() => setMenuOpen(!menuOpen)}
         >
           {menuOpen ? <X size={28} /> : <Menu size={28} />}

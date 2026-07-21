@@ -33,28 +33,28 @@ function Stats() {
             Our Achievements
           </h4>
 
-          <h2 className="text-5xl font-bold mt-4">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mt-4">
             Numbers That Speak
           </h2>
 
-          <p className="text-gray-400 mt-5">
+          <p className="text-gray-400 mt-5 max-w-2xl mx-auto px-4 text-sm sm:text-base">
             Trusted by fashion brands and manufacturers across India and around
             the globe for premium embroidery design and exceptional craftsmanship.
           </p>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {stats.map((item, index) => (
             <div
               key={index}
-              className="bg-slate-900 rounded-3xl p-8 text-center border border-slate-700 hover:border-yellow-400 hover:-translate-y-2 transition-all duration-300"
+              className="bg-slate-900 rounded-2xl sm:rounded-3xl p-4 sm:p-6 text-center border border-slate-700 hover:border-yellow-400 hover:-translate-y-2 transition-all duration-300"
             >
-              <h2 className="text-5xl font-bold text-yellow-400">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-yellow-400 break-words">
                 {item.number}
                 {item.suffix}
               </h2>
 
-              <p className="text-gray-300 mt-4">
+              <p className="text-gray-300 mt-3 text-sm sm:text-base leading-6">
                 {item.title}
               </p>
             </div>
