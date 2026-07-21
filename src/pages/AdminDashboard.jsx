@@ -17,7 +17,7 @@ import {
   markInquiryAsRead,
   bulkDeleteInquiries,
   bulkReadInquiries,
-} from "../services/api";
+} from "../services/inquiryService";
 
 function AdminDashboard() {
   const navigate = useNavigate();
@@ -38,8 +38,12 @@ function AdminDashboard() {
   }, []);
   const fetchInquiries = async () => {
     try {
-      const data = await getAllInquiries();
-      setInquiries(data);
+      const res = await getAllInquiries();
+      if (res.success) {
+        setInquiries(res.data || []);
+      } else {
+        toast.error("Failed to Load Inquiries");
+      }
     } catch (error) {
       console.error(error);
       toast.error("Failed to Load Inquiries");
@@ -48,19 +52,19 @@ function AdminDashboard() {
     }
   };
 
-
   
 const handleView = async (item) => {
   try {
-    const updated = await markInquiryAsRead(item.id);
+    const res = await markInquiryAsRead(item.id);
+    const updated = res.success ? res.data : { ...item, is_read: true };
 
     setInquiries((prev) =>
       prev.map((inq) =>
-        inq.id === item.id ? updated : inq
+        inq.id === item.id ? { ...inq, is_read: true } : inq
       )
     );
 
-    setSelectedInquiry(updated);
+    setSelectedInquiry(updated || { ...item, is_read: true });
   } catch (error) {
     console.error(error);
   }
@@ -95,17 +99,20 @@ const handleBulkDelete = async () => {
 
   try {
 
-    await bulkDeleteInquiries(selectedRows);
+    const res = await bulkDeleteInquiries(selectedRows);
+    if (res.success) {
+      setInquiries((prev) =>
+        prev.filter(
+          (item) => !selectedRows.includes(item.id)
+        )
+      );
 
-    setInquiries((prev) =>
-      prev.filter(
-        (item) => !selectedRows.includes(item.id)
-      )
-    );
+      setSelectedRows([]);
 
-    setSelectedRows([]);
-
-    toast.success("Selected inquiries deleted.");
+      toast.success("Selected inquiries deleted.");
+    } else {
+      toast.error("Bulk delete failed.");
+    }
 
   } catch (error) {
 
@@ -125,19 +132,22 @@ const handleBulkRead = async () => {
 
   try {
 
-    await bulkReadInquiries(selectedRows);
+    const res = await bulkReadInquiries(selectedRows);
+    if (res.success) {
+      setInquiries((prev) =>
+        prev.map((item) =>
+          selectedRows.includes(item.id)
+            ? { ...item, is_read: true }
+            : item
+        )
+      );
 
-    setInquiries((prev) =>
-      prev.map((item) =>
-        selectedRows.includes(item.id)
-          ? { ...item, is_read: true }
-          : item
-      )
-    );
+      setSelectedRows([]);
 
-    setSelectedRows([]);
-
-    toast.success("Selected inquiries marked as read.");
+      toast.success("Selected inquiries marked as read.");
+    } else {
+      toast.error("Failed to mark as read.");
+    }
 
   } catch (error) {
     console.error(error);
@@ -163,13 +173,16 @@ const handleBulkRead = async () => {
   if (!result.isConfirmed) return;
 
   try {
-    await deleteInquiry(id);
+    const res = await deleteInquiry(id);
+    if (res.success) {
+      setInquiries((prev) =>
+        prev.filter((item) => item.id !== id)
+      );
 
-    setInquiries((prev) =>
-      prev.filter((item) => item.id !== id)
-    );
-
-    toast.success("Inquiry Deleted Successfully");
+      toast.success("Inquiry Deleted Successfully");
+    } else {
+      toast.error("Failed to Delete Inquiry");
+    }
   } catch (error) {
     console.error(error);
 

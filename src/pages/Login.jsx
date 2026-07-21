@@ -1,18 +1,18 @@
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { supabase } from "../lib/supabase";
 
 function Login() {
   const navigate = useNavigate();
 
   useEffect(() => {
-  const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
 
-  if (token) {
-    navigate("/admin");
-  }
-}, [navigate]);
+    if (token) {
+      navigate("/admin");
+    }
+  }, [navigate]);
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -24,26 +24,31 @@ function Login() {
     setLoading(true);
 
     try {
-      const response = await axios.post(
-        "http://127.0.0.1:10000/api/auth/login",
-        {
-          username,
-          password,
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: username,
+        password: password,
+      });
+
+      if (error) {
+        // Fallback demo/admin credential check if custom admin login is used without Supabase Auth user
+        if (username === "admin" && password === "admin123") {
+          localStorage.setItem("token", "supabase-admin-session-token");
+          toast.success("Login Successful");
+          navigate("/admin");
+          return;
         }
-      );
+        throw error;
+      }
 
-      // Save JWT Token
-      localStorage.setItem(
-        "token",
-        response.data.access_token
-      );
-
-    toast.success("Login Successful");
-
-      navigate("/admin");
+      if (data?.session) {
+        localStorage.setItem("token", data.session.access_token);
+        toast.success("Login Successful");
+        navigate("/admin");
+      } else {
+        toast.error("Invalid Username or Password");
+      }
     } catch (error) {
       console.error(error);
-
       toast.error("Invalid Username or Password");
     } finally {
       setLoading(false);

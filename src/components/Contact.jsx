@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { sendInquiry } from "../services/api";
+import { sendInquiry } from "../services/inquiryService";
 
 import {
   FaPhoneAlt,
@@ -31,16 +31,20 @@ function Contact() {
     setLoading(true);
 
     try {
-      await sendInquiry(formData);
+      const result = await sendInquiry(formData);
 
-      alert("✅ Inquiry Sent Successfully!");
+      if (result.success) {
+        alert("✅ Inquiry Sent Successfully!");
 
-      setFormData({
-        name: "",
-        email: "",
-        phone: "",
-        message: "",
-      });
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          message: "",
+        });
+      } else {
+        alert("❌ Failed to send inquiry.");
+      }
     } catch (error) {
       console.error(error);
       alert("❌ Failed to send inquiry.");
