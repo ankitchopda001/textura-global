@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { toast } from "react-toastify";
 import { sendInquiry } from "../services/inquiryService";
 
 import {
@@ -34,7 +35,7 @@ function Contact() {
       const result = await sendInquiry(formData);
 
       if (result.success) {
-        alert("✅ Inquiry Sent Successfully!");
+        toast.success("Inquiry Sent Successfully!");
 
         setFormData({
           name: "",
@@ -43,11 +44,11 @@ function Contact() {
           message: "",
         });
       } else {
-        alert("❌ Failed to send inquiry.");
+        toast.error("Failed to send inquiry: " + (result.error || "Please try again"));
       }
     } catch (error) {
       console.error(error);
-      alert("❌ Failed to send inquiry.");
+      toast.error("Failed to send inquiry.");
     }
 
     setLoading(false);

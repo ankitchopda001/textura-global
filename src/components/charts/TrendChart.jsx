@@ -9,8 +9,9 @@ import {
   CartesianGrid,
 } from "recharts";
 
-function TrendChart({ inquiries }) {
+function TrendChart({ inquiries = [] }) {
   const last7Days = {};
+  const safeInquiries = Array.isArray(inquiries) ? inquiries : [];
 
   for (let i = 6; i >= 0; i--) {
     const date = new Date();
@@ -24,14 +25,20 @@ function TrendChart({ inquiries }) {
     last7Days[key] = 0;
   }
 
-  inquiries.forEach((item) => {
-    const key = new Date(item.created_at).toLocaleDateString("en-IN", {
-      day: "2-digit",
-      month: "short",
-    });
+  safeInquiries.forEach((item) => {
+    if (item && item.created_at) {
+      try {
+        const key = new Date(item.created_at).toLocaleDateString("en-IN", {
+          day: "2-digit",
+          month: "short",
+        });
 
-    if (last7Days[key] !== undefined) {
-      last7Days[key]++;
+        if (last7Days[key] !== undefined) {
+          last7Days[key]++;
+        }
+      } catch (e) {
+        // Ignore date parse error
+      }
     }
   });
 

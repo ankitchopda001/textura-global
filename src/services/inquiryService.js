@@ -6,13 +6,27 @@ import { supabase } from "../lib/supabase";
  */
 export const sendInquiry = async (inquiryData) => {
   try {
+    const payload = {
+      name: inquiryData.name || "",
+      email: inquiryData.email || "",
+      phone: inquiryData.phone || "",
+      message: inquiryData.message || "",
+      is_read: false,
+    };
+
     const { data, error } = await supabase
       .from("contact_messages")
-      .insert([inquiryData])
+      .insert([payload])
       .select();
 
     if (error) {
-      throw error;
+      // Fallback insert without .select() if RLS SELECT policy is restricted
+      const { error: simpleError } = await supabase
+        .from("contact_messages")
+        .insert([payload]);
+
+      if (simpleError) throw simpleError;
+      return { success: true, data: [payload] };
     }
 
     return {
@@ -23,14 +37,14 @@ export const sendInquiry = async (inquiryData) => {
     console.error("Error creating inquiry:", error);
     return {
       success: false,
-      error: error.message || error,
+      error: error.message || String(error),
     };
   }
 };
 
 /**
  * Get All Inquiries
- * Fetches all inquiries from contact_messages
+ * Fetches all inquiries directly from contact_messages in Supabase
  */
 export const getAllInquiries = async () => {
   try {
@@ -39,16 +53,14 @@ export const getAllInquiries = async () => {
       .select("*")
       .order("created_at", { ascending: false });
 
-    if (error) {
-      throw error;
-    }
+    if (error) throw error;
 
     return {
       success: true,
-      data,
+      data: data || [],
     };
   } catch (error) {
-    console.error("Error fetching all inquiries:", error);
+    console.error("Error fetching inquiries:", error);
     return {
       success: false,
       error: error.message || error,
@@ -58,7 +70,7 @@ export const getAllInquiries = async () => {
 
 /**
  * Get Inquiry By Id
- * Fetches a single inquiry by its ID
+ * Fetches a single inquiry by its ID from Supabase
  */
 export const getInquiryById = async (id) => {
   try {
@@ -68,9 +80,7 @@ export const getInquiryById = async (id) => {
       .eq("id", id)
       .single();
 
-    if (error) {
-      throw error;
-    }
+    if (error) throw error;
 
     return {
       success: true,
@@ -87,7 +97,7 @@ export const getInquiryById = async (id) => {
 
 /**
  * Delete Inquiry
- * Deletes an inquiry by ID
+ * Deletes an inquiry by ID from Supabase
  */
 export const deleteInquiry = async (id) => {
   try {
@@ -96,9 +106,7 @@ export const deleteInquiry = async (id) => {
       .delete()
       .eq("id", id);
 
-    if (error) {
-      throw error;
-    }
+    if (error) throw error;
 
     return {
       success: true,
@@ -115,7 +123,7 @@ export const deleteInquiry = async (id) => {
 
 /**
  * Bulk Delete Inquiries
- * Deletes multiple inquiries by array of IDs
+ * Deletes multiple inquiries by array of IDs from Supabase
  */
 export const bulkDeleteInquiries = async (ids) => {
   try {
@@ -124,9 +132,7 @@ export const bulkDeleteInquiries = async (ids) => {
       .delete()
       .in("id", ids);
 
-    if (error) {
-      throw error;
-    }
+    if (error) throw error;
 
     return {
       success: true,
@@ -143,7 +149,7 @@ export const bulkDeleteInquiries = async (ids) => {
 
 /**
  * Mark Inquiry as Read
- * Updates is_read flag to true for a single inquiry
+ * Updates is_read flag to true for a single inquiry in Supabase
  */
 export const markInquiryAsRead = async (id) => {
   try {
@@ -154,9 +160,7 @@ export const markInquiryAsRead = async (id) => {
       .select()
       .single();
 
-    if (error) {
-      throw error;
-    }
+    if (error) throw error;
 
     return {
       success: true,
@@ -173,7 +177,7 @@ export const markInquiryAsRead = async (id) => {
 
 /**
  * Bulk Read Inquiries
- * Updates is_read flag to true for multiple inquiries
+ * Updates is_read flag to true for multiple inquiries in Supabase
  */
 export const bulkReadInquiries = async (ids) => {
   try {
@@ -183,9 +187,7 @@ export const bulkReadInquiries = async (ids) => {
       .in("id", ids)
       .select();
 
-    if (error) {
-      throw error;
-    }
+    if (error) throw error;
 
     return {
       success: true,
