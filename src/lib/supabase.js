@@ -4,7 +4,7 @@ let rawUrl = (import.meta.env.VITE_SUPABASE_URL || "").trim();
 let rawKey = (import.meta.env.VITE_SUPABASE_ANON_KEY || "").trim();
 
 // Strip /rest/v1 or trailing slashes if user pasted REST endpoint URL
-rawUrl = rawUrl.replace(/\/rest\/v1\/?$/i, "").replace(/\/+$/, "");
+rawUrl = rawUrl.replace(/\/rest\/v1\/?.*$/i, "").replace(/\/+$/, "");
 
 export const isSupabaseConfigured = () => {
   return (
